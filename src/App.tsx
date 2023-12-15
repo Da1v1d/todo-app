@@ -1,9 +1,18 @@
-import './App.css';
+import { Container } from '@mui/material';
+import { Todo } from './components/Todo/Todo';
+import { TodoForm } from './components/TodoForm/TodoForm';
+import { useAppSelector } from './hooks/hooks';
 
 function App() {
+  const todos = useAppSelector((state) => state.todo.todos);
+
   return (
-    <div className='App'>
-    </div>
+    <Container>
+      <TodoForm />
+      {todos?.map((todo) => (
+        <Todo key={todo.id} {...todo} />
+      ))}
+    </Container>
   );
 }
 

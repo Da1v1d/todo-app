@@ -10,3 +10,5 @@ export interface ITodos {
   todos: ITodo[];
   deleted?: ITodo[];
 }
+
+export type ITodoForm = Omit<ITodo, 'id' | 'completed'>;
