@@ -1,14 +1,11 @@
 import { Button } from '@mui/material';
-import { useForm } from 'react-hook-form';
 import { ITodo, ITodoForm } from '../../store/todos/types';
 import { Form, FormStack, Input } from './TodoForm.styled';
 import { useAppDispatch } from '../../hooks/hooks';
 import { addTodo, editTodo } from '../../store/todos/todoSlice';
 import { generateId } from '../../utils';
 import { FC } from 'react';
-import { useFormHook } from '../../hooks/useForm';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { useTodoForm } from '../../hooks/useTodoForm';
 
 export const TodoForm: FC<{
   todo?: ITodo;
@@ -16,37 +13,12 @@ export const TodoForm: FC<{
 }> = ({ todo, closeModal }) => {
   const dispatch = useAppDispatch();
 
-  const schema = yup.object().shape({
-    title: yup
-      .string()
-      .max(20, 'Title must be at most 20 characters')
-      .required('Title is required'),
-    description: yup.string().notRequired(),
-    deadline: yup.string().notRequired(),
-  });
+  const { register, handleSubmit, reset, errors, isDirty, isValid } =
+    useTodoForm(todo);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors, isDirty, isValid },
-    setValue,
-  } = useForm<ITodoForm>({
-    defaultValues: {
-      title: todo?.title,
-      deadline: todo?.deadline,
-      description: todo?.description,
-    },
-    mode: 'onChange',
-    // @ts-ignore FIX: Need to fix yup resolver error when we add notRequired
-    resolver: yupResolver(schema),
-  });
-
-  const onSubmit = (data: ITodoForm | ITodo) => {
+  const onSubmit = (data: ITodoForm) => {
     if (todo) {
-      dispatch(
-        editTodo({ ...data, completed: todo.completed, id: todo.id } as ITodo)
-      );
+      dispatch(editTodo({ ...data, completed: todo.completed, id: todo.id }));
       closeModal && closeModal();
     } else {
       dispatch(
@@ -62,7 +34,6 @@ export const TodoForm: FC<{
       );
     }
   };
-  // const { onSubmit } = useFormHook();
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

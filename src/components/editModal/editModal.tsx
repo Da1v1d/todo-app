@@ -1,4 +1,3 @@
-import { Dialog } from '@mui/material';
 import { TodoForm } from '../TodoForm/TodoForm';
 import { FC, memo } from 'react';
 import { ITodo } from '../../store/todos/types';

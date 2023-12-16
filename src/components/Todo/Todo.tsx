@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { ITodo } from '../../store/todos/types';
-import { CardActions, CardContent, Typography } from '@mui/material';
+import { CardActions, Typography } from '@mui/material';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';

@@ -1,4 +1,4 @@
-import { Tab, Tabs, Typography } from '@mui/material';
+import { Tab, Typography } from '@mui/material';
 import { Todo } from './components/Todo/Todo';
 import { TodoForm } from './components/TodoForm/TodoForm';
 import { useAppSelector } from './hooks/hooks';
@@ -48,13 +48,15 @@ function App() {
             <Tab label={`Trash (${deleted?.length})`} value='2' />
           </TabList>
           <TabPanel value='0'>
-            {todos.filter((todo) => !todo.completed)?.map((todo) => (
-              <Todo
-                key={todo.id}
-                todo={todo}
-                openModalHandler={openModalHandler}
-              />
-            ))}
+            {todos
+              .filter((todo) => !todo.completed)
+              ?.map((todo) => (
+                <Todo
+                  key={todo.id}
+                  todo={todo}
+                  openModalHandler={openModalHandler}
+                />
+              ))}
           </TabPanel>
           <TabPanel value='1'>
             {todos
