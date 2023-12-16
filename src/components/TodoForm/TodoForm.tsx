@@ -3,11 +3,15 @@ import { useForm } from 'react-hook-form';
 import { ITodo, ITodoForm } from '../../store/todos/types';
 import { Form, FormStack, Input } from './TodoForm.styled';
 import { useAppDispatch } from '../../hooks/hooks';
-import { addTodo } from '../../store/todos/todoSlice';
+import { addTodo, editTodo } from '../../store/todos/todoSlice';
 import { generateId } from '../../utils';
 import { FC } from 'react';
+import { useFormHook } from '../../hooks/useForm';
 
-export const TodoForm: FC<Partial<ITodo>> = () => {
+export const TodoForm: FC<{
+  todo?: ITodo;
+  closeModal?: () => void;
+}> = ({ todo, closeModal }) => {
   const dispatch = useAppDispatch();
 
   const {
@@ -16,21 +20,28 @@ export const TodoForm: FC<Partial<ITodo>> = () => {
     formState: { errors, isDirty, isValid },
   } = useForm<Omit<ITodo, 'id' | 'completed'>>({
     defaultValues: {
-      title: '',
-      deadline: undefined,
-      description: '',
+      title: todo?.title,
+      deadline: todo?.deadline,
+      description: todo?.description,
     },
   });
 
-  const onSubmit = (data: ITodoForm) => {
-    dispatch(
-      addTodo({
-        ...data,
-        completed: false,
-        id: generateId(),
-      })
-    );
+  const onSubmit = (data: ITodoForm | ITodo) => {
+    if (todo) {
+      dispatch(editTodo({ ...data, id: todo.id } as ITodo));
+      closeModal && closeModal();
+    } else {
+      dispatch(
+        addTodo({
+          ...data,
+          completed: false,
+          id: generateId(),
+        })
+      );
+    }
   };
+
+  // const { onSubmit } = useFormHook();
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -47,7 +58,7 @@ export const TodoForm: FC<Partial<ITodo>> = () => {
           type='submit'
           variant='contained'
         >
-          add todo
+          {todo ? 'edit todo' : 'add todo'}
         </Button>
       </FormStack>
     </Form>

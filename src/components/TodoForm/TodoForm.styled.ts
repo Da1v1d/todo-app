@@ -7,10 +7,11 @@ export const Input = styled(TextField)({
 
 export const Form = styled('form')({
   marginTop: '20px',
+  maxWidth: '500px',
 });
 
 export const FormStack = styled(Stack)({
-  width: '50%',
+  width: '100%',
 });
 
 export const SubmitButton = styled(Button)({});
