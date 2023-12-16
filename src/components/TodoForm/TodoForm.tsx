@@ -16,27 +16,30 @@ export const TodoForm: FC<{
 }> = ({ todo, closeModal }) => {
   const dispatch = useAppDispatch();
 
-  //FIX: Need to fix yup resolver error when we add notRequired
   const schema = yup.object().shape({
     title: yup
       .string()
       .max(20, 'Title must be at most 20 characters')
       .required('Title is required'),
     description: yup.string().notRequired(),
-    deadline: yup.date().notRequired(),
+    deadline: yup.string().notRequired(),
   });
 
   const {
     register,
     handleSubmit,
-    formState: { isDirty, isValid },
+    reset,
+    formState: { errors, isDirty, isValid },
+    setValue,
   } = useForm<ITodoForm>({
     defaultValues: {
       title: todo?.title,
       deadline: todo?.deadline,
       description: todo?.description,
     },
-    // resolver: yupResolver(schema),
+    mode: 'onChange',
+    // @ts-ignore FIX: Need to fix yup resolver error when we add notRequired
+    resolver: yupResolver(schema),
   });
 
   const onSubmit = (data: ITodoForm | ITodo) => {
@@ -53,9 +56,12 @@ export const TodoForm: FC<{
           id: generateId(),
         })
       );
+      reset(
+        { title: '', deadline: '', description: '' },
+        { keepValues: false }
+      );
     }
   };
-
   // const { onSubmit } = useFormHook();
 
   return (
@@ -66,6 +72,7 @@ export const TodoForm: FC<{
           required
           {...register('title', { required: true })}
         />
+        {errors?.title?.message}
         <Input label='description' {...register('description')} multiline />
         <Input type='date' {...register('deadline')} />
         <Button

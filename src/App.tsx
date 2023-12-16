@@ -37,10 +37,10 @@ function App() {
         <TodoForm />
         <TabContext value={value}>
           <TabList onChange={handleChange}>
-            <Tab label={`All (${todos?.length})`} value='0' />
+            <Tab label={`Active (${todos?.length})`} value='0' />
             <Tab
               label={`Completed (${
-                todos.filter((todo) => todo.completed === true)?.length
+                todos.filter((todo) => todo.completed)?.length
               })`}
               value='1'
             />
@@ -48,7 +48,7 @@ function App() {
             <Tab label={`Trash (${deleted?.length})`} value='2' />
           </TabList>
           <TabPanel value='0'>
-            {todos?.map((todo) => (
+            {todos.filter((todo) => !todo.completed)?.map((todo) => (
               <Todo
                 key={todo.id}
                 todo={todo}
@@ -58,7 +58,7 @@ function App() {
           </TabPanel>
           <TabPanel value='1'>
             {todos
-              .filter((todo) => todo.completed === true)
+              .filter((todo) => todo.completed)
               ?.map((todo) => (
                 <Todo
                   key={todo.id}

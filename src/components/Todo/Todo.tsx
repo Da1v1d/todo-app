@@ -24,7 +24,7 @@ export const Todo: FC<TodoComponentType> = ({ todo, openModalHandler }) => {
           <Typography variant='h4'>{title.toUpperCase()}</Typography>
           <Typography variant='body1'>{description}</Typography>
           <Typography>
-            {deadline && 'deadline' + new Date(deadline).toLocaleDateString()}
+            {deadline && 'deadline: ' + new Date(deadline).toLocaleDateString()}
           </Typography>
         </div>
         <CardActions>

@@ -1,10 +1,13 @@
 import styled from '@emotion/styled';
 
-export const Container = styled('header')({
+export const Container = styled('div')({
   maxWidth: '100vw',
   justifyContent: 'center',
   display: 'flex',
   paddingTop: '50px',
+  '.MuiTabPanel-root': {
+    padding: 0,
+  },
   '&:before': {
     content: '" "',
     width: '100%',

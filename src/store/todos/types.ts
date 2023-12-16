@@ -3,7 +3,7 @@ export interface ITodo {
   id: string;
   completed: boolean;
   description?: string;
-  deadline?: Date;
+  deadline?: string;
 }
 
 export interface ITodos {
