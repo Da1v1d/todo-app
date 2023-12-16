@@ -17,8 +17,6 @@ export const todoSlice = createSlice({
       const deletedTodo = state.todos.find(
         (todo) => todo.id === action.payload
       );
-      console.log(state.todos.find((todo) => todo.id === action.payload));
-
       deletedTodo?.id && state.deleted?.push(deletedTodo);
       state.todos = state.todos.filter((todo) => todo.id !== action.payload);
     },

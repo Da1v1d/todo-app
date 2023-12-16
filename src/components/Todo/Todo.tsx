@@ -1,10 +1,13 @@
 import { FC } from 'react';
 import { ITodo } from '../../store/todos/types';
-import { Card, CardContent } from '@mui/material';
+import { CardActions, CardContent, Typography } from '@mui/material';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useAppDispatch } from '../../hooks/hooks';
-import { deleteTodo } from '../../store/todos/todoSlice';
+import { completeTodo, deleteTodo } from '../../store/todos/todoSlice';
+import { TodoCard } from './Todo.styled';
 
 type TodoComponentType = {
   todo: ITodo;
@@ -15,22 +18,28 @@ export const Todo: FC<TodoComponentType> = ({ todo, openModalHandler }) => {
   const { title, description, deadline, completed, id } = todo;
   const dispatch = useAppDispatch();
   return (
-    <Card
-      style={{
-        marginTop: '10px',
-        background: 'rgba(0,0,0,0.05)',
-        maxWidth: '440px',
-      }}
-    >
-      <CardContent onClick={() => openModalHandler(todo)}>
-        <div>{title}</div>
-        <div>{description}</div>
-        <div>{deadline && new Date(deadline).toLocaleDateString()}</div>
-        <div>{completed}</div>
+    <TodoCard completed={completed}>
+      <CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <Typography variant='h4'>{title}</Typography>
+          <Typography variant='body1'>{description}</Typography>
+          <Typography>
+            {deadline && new Date(deadline).toLocaleDateString()}
+          </Typography>
+          <Typography>{completed}</Typography>
+        </div>
+        <CardActions>
+          <IconButton onClick={() => openModalHandler(todo)}>
+            <EditIcon color='primary' />
+          </IconButton>
+          <IconButton onClick={() => dispatch(completeTodo(id))}>
+            <CheckCircleIcon color='success' />
+          </IconButton>
+          <IconButton onClick={() => dispatch(deleteTodo(id))}>
+            <DeleteIcon color='warning' />
+          </IconButton>
+        </CardActions>
       </CardContent>
-      <IconButton onClick={() => dispatch(deleteTodo(id))}>
-        <DeleteIcon color='error' />
-      </IconButton>
-    </Card>
+    </TodoCard>
   );
 };

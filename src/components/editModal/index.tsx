@@ -11,7 +11,17 @@ type EditModalType = {
 
 export const EditModal: FC<EditModalType> = ({ open, todo, closeModal }) => {
   return (
-    <Dialog open={open} onClose={closeModal}>
+    <Dialog
+      open={open}
+      onClose={closeModal}
+      sx={{
+        '.MuiPaper-root': {
+          borderRadius: '12px',
+          padding: '30px 14px',
+        },
+        form: { border: 'none',maxWidth:'100%' },
+      }}
+    >
       <TodoForm todo={todo} closeModal={closeModal} />
     </Dialog>
   );
