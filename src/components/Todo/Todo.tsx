@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useAppDispatch } from '../../hooks/hooks';
 import { completeTodo, deleteTodo } from '../../store/todos/todoSlice';
-import { TodoCard } from './Todo.styled';
+import { TodoCard, TodoCardContent } from './Todo.styled';
 
 type TodoComponentType = {
   todo: ITodo;
@@ -19,27 +19,28 @@ export const Todo: FC<TodoComponentType> = ({ todo, openModalHandler }) => {
   const dispatch = useAppDispatch();
   return (
     <TodoCard completed={completed}>
-      <CardContent sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <TodoCardContent>
         <div>
-          <Typography variant='h4'>{title}</Typography>
+          <Typography variant='h4'>{title.toUpperCase()}</Typography>
           <Typography variant='body1'>{description}</Typography>
           <Typography>
-            {deadline && new Date(deadline).toLocaleDateString()}
+            {deadline && 'deadline' + new Date(deadline).toLocaleDateString()}
           </Typography>
-          <Typography>{completed}</Typography>
         </div>
         <CardActions>
           <IconButton onClick={() => openModalHandler(todo)}>
             <EditIcon color='primary' />
           </IconButton>
-          <IconButton onClick={() => dispatch(completeTodo(id))}>
-            <CheckCircleIcon color='success' />
-          </IconButton>
+          {!completed && (
+            <IconButton onClick={() => dispatch(completeTodo(id))}>
+              <CheckCircleIcon color='success' />
+            </IconButton>
+          )}
           <IconButton onClick={() => dispatch(deleteTodo(id))}>
             <DeleteIcon color='warning' />
           </IconButton>
         </CardActions>
-      </CardContent>
+      </TodoCardContent>
     </TodoCard>
   );
 };

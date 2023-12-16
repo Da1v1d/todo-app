@@ -30,7 +30,7 @@ export const TodoForm: FC<{
     register,
     handleSubmit,
     formState: { isDirty, isValid },
-  } = useForm<Omit<ITodo, 'id' | 'completed'>>({
+  } = useForm<ITodoForm>({
     defaultValues: {
       title: todo?.title,
       deadline: todo?.deadline,

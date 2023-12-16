@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 export const Container = styled('header')({
-  width: '100vw',
+  maxWidth: '100vw',
   justifyContent: 'center',
   display: 'flex',
   paddingTop: '50px',
