@@ -4,11 +4,11 @@ export interface ITodo {
   completed: boolean;
   description?: string;
   deadline?: string;
+  deleted: boolean;
 }
 
 export interface ITodos {
   todos: ITodo[];
-  deleted?: ITodo[];
 }
 
 export type ITodoForm = Omit<ITodo, 'id' | 'completed'>;

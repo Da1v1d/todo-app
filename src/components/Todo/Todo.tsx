@@ -15,7 +15,7 @@ type TodoComponentType = {
 };
 
 export const Todo: FC<TodoComponentType> = ({ todo, openModalHandler }) => {
-  const { title, description, deadline, completed, id } = todo;
+  const { title, description, deadline, completed, id, deleted } = todo;
   const dispatch = useAppDispatch();
   return (
     <TodoCard completed={completed}>
@@ -28,17 +28,21 @@ export const Todo: FC<TodoComponentType> = ({ todo, openModalHandler }) => {
           </Typography>
         </div>
         <CardActions>
-          <IconButton onClick={() => openModalHandler(todo)}>
-            <EditIcon color='primary' />
-          </IconButton>
-          {!completed && (
+          {!completed && !deleted && (
+            <IconButton onClick={() => openModalHandler(todo)}>
+              <EditIcon color='primary' />
+            </IconButton>
+          )}
+          {!completed && !deleted && (
             <IconButton onClick={() => dispatch(completeTodo(id))}>
               <CheckCircleIcon color='success' />
             </IconButton>
           )}
-          <IconButton onClick={() => dispatch(deleteTodo(id))}>
-            <DeleteIcon color='warning' />
-          </IconButton>
+          {!deleted && (
+            <IconButton onClick={() => dispatch(deleteTodo(id))}>
+              <DeleteIcon color='warning' />
+            </IconButton>
+          )}
         </CardActions>
       </TodoCardContent>
     </TodoCard>

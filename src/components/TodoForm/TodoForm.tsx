@@ -18,20 +18,25 @@ export const TodoForm: FC<{
 
   const onSubmit = (data: ITodoForm) => {
     if (todo) {
-      dispatch(editTodo({ ...data, completed: todo.completed, id: todo.id }));
+      dispatch(
+        editTodo({
+          ...data,
+          completed: todo.completed,
+          deleted: todo.deleted,
+          id: todo.id,
+        })
+      );
       closeModal && closeModal();
     } else {
       dispatch(
         addTodo({
           ...data,
           completed: false,
+          deleted: false,
           id: generateId(),
         })
       );
-      reset(
-        { title: '', deadline: '', description: '' },
-        { keepValues: false }
-      );
+      reset({ title: '', deadline: '', description: '' });
     }
   };
 

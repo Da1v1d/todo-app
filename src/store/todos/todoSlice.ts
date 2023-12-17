@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ITodo, ITodoForm, ITodos } from './types';
+import { ITodo, ITodos } from './types';
 
 const initialState: ITodos = {
   todos: [],
-  deleted: [],
 };
 
 export const todoSlice = createSlice({
@@ -11,14 +10,16 @@ export const todoSlice = createSlice({
   initialState,
   reducers: {
     addTodo: (state, action: PayloadAction<ITodo>) => {
-      state.todos.unshift({ ...action.payload, completed: false });
+      state.todos.unshift({
+        ...action.payload,
+      });
     },
     deleteTodo: (state, action: PayloadAction<string>) => {
-      const deletedTodo = state.todos.find(
+      const deletedTodo = state.todos.findIndex(
         (todo) => todo.id === action.payload
       );
-      deletedTodo?.id && state.deleted?.push(deletedTodo);
-      state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+      state.todos[deletedTodo].deleted = true;
+      state.todos[deletedTodo].deadline = '';
     },
     completeTodo: (state, action: PayloadAction<string>) => {
       const findTodo = state.todos.findIndex(

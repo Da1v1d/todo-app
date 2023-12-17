@@ -9,7 +9,7 @@ import { Container } from './App.styled';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 function App() {
-  const { todos, deleted } = useAppSelector((state) => state.todo);
+  const { todos } = useAppSelector((state) => state.todo);
   const [editData, setEditData] = useState<ITodo | null>(null);
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -37,19 +37,27 @@ function App() {
         <TodoForm />
         <TabContext value={value}>
           <TabList onChange={handleChange}>
-            <Tab label={`Active (${todos?.length})`} value='0' />
+            <Tab
+              label={`Active (${
+                todos.filter((todo) => !todo.completed && !todo.deleted)?.length
+              })`}
+              value='0'
+            />
             <Tab
               label={`Completed (${
-                todos.filter((todo) => todo.completed)?.length
+                todos.filter((todo) => todo.completed && !todo.deleted)?.length
               })`}
               value='1'
             />
 
-            <Tab label={`Trash (${deleted?.length})`} value='2' />
+            <Tab
+              label={`Trash (${todos.filter((todo) => todo.deleted)?.length})`}
+              value='2'
+            />
           </TabList>
           <TabPanel value='0'>
             {todos
-              .filter((todo) => !todo.completed)
+              .filter((todo) => !todo.completed && !todo.deleted)
               ?.map((todo) => (
                 <Todo
                   key={todo.id}
@@ -60,7 +68,7 @@ function App() {
           </TabPanel>
           <TabPanel value='1'>
             {todos
-              .filter((todo) => todo.completed)
+              .filter((todo) => todo.completed && !todo.deleted)
               ?.map((todo) => (
                 <Todo
                   key={todo.id}
@@ -71,13 +79,15 @@ function App() {
           </TabPanel>
 
           <TabPanel value='2'>
-            {deleted?.map((todo) => (
-              <Todo
-                key={todo.id}
-                todo={todo}
-                openModalHandler={openModalHandler}
-              />
-            ))}
+            {todos
+              .filter((todo) => todo.deleted)
+              ?.map((todo) => (
+                <Todo
+                  key={todo.id}
+                  todo={todo}
+                  openModalHandler={openModalHandler}
+                />
+              ))}
           </TabPanel>
         </TabContext>
 
