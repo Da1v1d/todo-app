@@ -4,7 +4,7 @@ import { TodoForm } from './components/TodoForm/TodoForm';
 import { useAppSelector } from './hooks/hooks';
 import { useCallback, useState } from 'react';
 import { ITodo } from './store/todos/types';
-import { EditModal } from './components/editModal/editModal';
+import { EditModal } from './components/Modals/EditModal/EditModal';
 import { Container } from './App.styled';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 

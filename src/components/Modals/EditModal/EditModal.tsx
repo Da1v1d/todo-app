@@ -1,6 +1,6 @@
-import { TodoForm } from '../TodoForm/TodoForm';
+import { TodoForm } from '../../TodoForm/TodoForm';
 import { FC, memo } from 'react';
-import { ITodo } from '../../store/todos/types';
+import { ITodo } from '../../../store/todos/types';
 import { EditDialog } from './EditModal.styled';
 
 type EditModalType = {
